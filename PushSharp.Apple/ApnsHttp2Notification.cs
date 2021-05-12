@@ -61,7 +61,11 @@ namespace PushSharp.Apple
             Payload = payload;
 
             Uuid = Guid.NewGuid ().ToString ("D");
+
+            Priority = ApnsPriority.High;
         }
+
+
 
         public bool IsDeviceRegistrationIdValid ()
         {

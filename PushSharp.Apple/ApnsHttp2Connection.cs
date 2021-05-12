@@ -85,8 +85,7 @@ namespace PushSharp.Apple
                 headers.Add ("apns-expiration", secondsSinceEpoch.ToString ()); //Epoch in seconds
             }
 
-            if (notification.Priority.HasValue)
-                headers.Add ("apns-priority", notification.Priority == ApnsPriority.Low ? "5" : "10"); // 5 or 10
+            headers.Add ("apns-priority", notification.Priority == ApnsPriority.Low ? "5" : "10"); // 5 or 10
 
             headers.Add ("content-length", data.Length.ToString ());
 
@@ -109,7 +108,7 @@ namespace PushSharp.Apple
                 var json = new JObject ();
 
                 if (response.Body != null && response.Body.Length > 0) {
-                    var body = Encoding.ASCII.GetString (response.Body);
+                    var body = Encoding.UTF8.GetString (response.Body);
                     json = JObject.Parse (body);
                 }
 
@@ -122,7 +121,7 @@ namespace PushSharp.Apple
                     }
 
                     // Expired
-                    throw new PushSharp.Core.DeviceSubscriptonExpiredException(notification) {
+                    throw new PushSharp.Core.DeviceSubscriptionExpiredException(notification) {
                         OldSubscriptionId = notification.DeviceToken,
                         NewSubscriptionId = null,
                         ExpiredAt = timestamp
